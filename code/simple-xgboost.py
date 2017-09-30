@@ -30,7 +30,7 @@ feval=gini_xgb, maximize=True, verbose_eval=10)
 
 p_test = model.predict(d_test)
 
-sub = pd.DataFrame()
-sub['id'] = id_test
-sub['target'] = p_test
-sub.to_csv(sub_path + 'xgb0.csv', index=False)
+sub_df = pd.DataFrame()
+sub_df['id'] = id_test
+sub_df['target'] = p_test
+sub_df.to_csv(sub_path + 'xgb0.csv', index=False)

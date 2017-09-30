@@ -19,24 +19,23 @@ id_test = test_df['id'].values
 
 X = train_df.drop(['target', 'id'], axis=1)
 X_test = test_df.drop(['id'], axis=1)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.25)
-
-model = CatBoostClassifier().fit(X_train, y_train)
+#X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.25)
+model = CatBoostClassifier().fit(X, y, verbose=True)
 
 order = np.argsort(model._feature_importance)
-plt.figure(figsize=[6,9])
-plt.plot(np.array(model._feature_importance)[order],range(len(order)),marker='o')
-plt.hlines(range(len(order)),np.zeros_like(order),np.array(model._feature_importance)[order],linestyles=':')
-plt.yticks(range(X.shape[1]),X.columns[order]);
+plt.figure(figsize=[10, 15])
+plt.plot(np.array(model._feature_importance)[order], range(len(order)), marker='o')
+plt.hlines(range(len(order)), np.zeros_like(order), np.array(model._feature_importance)[order], linestyles=':')
+plt.yticks(range(X.shape[1]), X.columns[order]);
 plt.tick_params(labelsize=16)
-plt.xlim([0.1,max(model._feature_importance)*1.5])
-plt.ylim(-1,len(order))
+plt.xlim([0.1, max(model._feature_importance)*1.5])
+plt.ylim(-1, len(order))
 plt.xscale('log')
 plt.savefig('feature_importance.png')
 
-p_test = model.predict_proba(d_test)
+p_test = model.predict_proba(X_test)[:, 1]
 
-sub = pd.DataFrame()
-sub['id'] = id_test
-sub['target'] = p_test
-sub.to_csv(sub_path + 'catboost0.csv', index=False)
+sub_df = pd.DataFrame()
+sub_df['id'] = id_test
+sub_df['target'] = p_test
+sub_df.to_csv(sub_path + 'catb0.csv', index=False)
