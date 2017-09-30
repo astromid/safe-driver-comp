@@ -99,3 +99,7 @@ ENV/
 .mypy_cache/
 
 data/
+code/learn_error.tsv
+code/meta.tsv
+*.tfevents
+code/time_left.tsv
