@@ -16,7 +16,7 @@ id_test = test_df['id'].values
 
 X = train_df.drop(['target', 'id'], axis=1)
 X_test = test_df.drop(['id'], axis=1)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.15)
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.25)
 
 d_train = xgb.DMatrix(X_train, y_train)
 d_val = xgb.DMatrix(X_val, y_val)
