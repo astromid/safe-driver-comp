@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from catboost import CatBoostClassifier
+#from gini import CatBoostGini
 
 sns.set()
 
@@ -19,8 +20,10 @@ id_test = test_df['id'].values
 
 X = train_df.drop(['target', 'id'], axis=1)
 X_test = test_df.drop(['id'], axis=1)
-#X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.25)
-model = CatBoostClassifier().fit(X, y, verbose=True)
+
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
+model = CatBoostClassifier(eval_metric='AUC')
+model.fit(X_train, y_train, use_best_model=True, eval_set=[X_val, y_val], verbose=True)
 
 order = np.argsort(model._feature_importance)
 plt.figure(figsize=[10, 15])
@@ -32,10 +35,12 @@ plt.xlim([0.1, max(model._feature_importance)*1.5])
 plt.ylim(-1, len(order))
 plt.xscale('log')
 plt.savefig('feature_importance.png')
+print('Feature importance saved')
 
 p_test = model.predict_proba(X_test)[:, 1]
 
 sub_df = pd.DataFrame()
 sub_df['id'] = id_test
 sub_df['target'] = p_test
-sub_df.to_csv(sub_path + 'catb0.csv', index=False)
+sub_df.to_csv(sub_path + 'catb1.csv', index=False)
+print('Submission file created')
