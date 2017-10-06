@@ -25,15 +25,18 @@ y = train_df['target'].values
 id_test = test_df['id'].values
 
 X = train_df.drop(['target', 'id'], axis=1)
+X = X.drop(['ps_ind_10_bin', 'ps_ind_11_bin', 'ps_ind_12_bin', 'ps_ind_13_bin'], axis=1)
 X_test = test_df.drop(['id'], axis=1)
+X_test = X_test.drop(['ps_ind_10_bin', 'ps_ind_11_bin', 'ps_ind_12_bin', 'ps_ind_13_bin'], axis=1)
+
 
 print('Balancing train dataset')
 print('Old target distribution:')
 print(sorted(Counter(y).items()))
 smote = SMOTE(n_jobs=4)
 # enn = EditedNearestNeighbours(n_jobs=4)
-tomek = TomekLinks(n_jobs=4)
-sm = SMOTETomek(smote=smote, tomek=tomek, n_jobs=4)
+# tomek = TomekLinks(n_jobs=4)
+sm = SMOTETomek(smote=smote)
 X_resampled, y_resampled = sm.fit_sample(X, y)
 print('New target distribution:')
 print(sorted(Counter(y_resampled).items()))
