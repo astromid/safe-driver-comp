@@ -55,4 +55,6 @@ np.save('../data/X-filt.npy', X)
 np.save('../data/X-test-filt.npy', X_test)
 np.save('../data/y.npy', y)
 np.save('../data/id-test.npy', id_test)
-np.save('../data/feat_names.npy', X.columns)
+
+np.save('../pics/feat_names.npy', X.columns)
+np.save('../pics/X-shape1.npy', X.shape[1])
