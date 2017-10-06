@@ -43,8 +43,13 @@ X_test = X_test.drop(feat_to_drop, axis=1)
 # new features
 X['sum_bin'] = sum([X[f] for f in binary_feats if f not in feat_to_drop])
 X['sum_NA'] = sum([(X[f] == -1) for f in X.columns])
+X['ps_car_15_sqr'] = (X['ps_car_15'])**2
+X = X.drop(['ps_car_15'], axis=1)
+
 X_test['sum_bin'] = sum([X_test[f] for f in binary_feats if f not in feat_to_drop])
 X_test['sum_NA'] = sum([(X_test[f] == -1) for f in X_test.columns])
+X_test['ps_car_15_sqr'] = (X_test['ps_car_15'])**2
+X_test = X_test.drop(['ps_car_15'], axis=1)
 
 np.save('../data/X-filt.npy', X)
 np.save('../data/X-test-filt.npy', X_test)
