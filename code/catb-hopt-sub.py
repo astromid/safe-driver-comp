@@ -11,7 +11,7 @@ id_test = np.load(data_path + 'id-test.npy')
 X_test = np.load(data_path + 'X-test-filt.npy')
 
 best_params = np.load('best-params.npy').item()
-model = CatBoostClassifier(best_params)
+model = CatBoostClassifier(**best_params)
 model.fit(X, y, verbose=True)
 np.save('../pics/feat-imp-hopt.npy', model._feature_importance)
 p_test = model.predict_proba(X_test)[:, 1]

@@ -33,7 +33,7 @@ best = fmin(hopt_objective, space, algo=tpe.suggest, max_evals=200, trials=trial
 best_params = space_eval(space, best)
 np.save('best-params.npy', best_params)
 print(best_params)
-model = CatBoostClassifier(best_params)
+model = CatBoostClassifier(**best_params)
 model.fit(X, y, verbose=True)
 np.save('../pics/feat-imp.npy', model._feature_importance)
 p_test = model.predict_proba(X_test)[:, 1]
