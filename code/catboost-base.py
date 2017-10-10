@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from catboost import CatBoostClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
@@ -19,6 +20,7 @@ model = CatBoostClassifier(**hopt_params)
 model.fit(X, y, verbose=True)
 X_test = np.load('../data/' + dir_name + '/X-test.npy')
 p_test = model.predict_proba(X_test)[:, 1]
+
 sub_df = pd.DataFrame()
 id_test = np.load('../data/' + dir_name + '/id-test.npy')
 sub_df['id'] = id_test

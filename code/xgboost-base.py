@@ -1,36 +1,33 @@
 import numpy as np
 import pandas as pd
-import xgboost as xgb
-from sklearn.model_selection import train_test_split
-from gini import gini_xgb
+from xgboost import XGBClassifier
+from sklearn.model_selection import StratifiedKFold, cross_val_score
 
-train_path = '../data/train.csv'
-test_path = '../data/test.csv'
 sub_path = '../subs/'
+dir_name = 'raw-npy'
 
-train_df = pd.read_csv(train_path)
-test_df = pd.read_csv(test_path)
+X = np.load('../data/' + dir_name + '/X.npy')
+y = np.load('../data/' + dir_name + '/y.npy')
 
-y = train_df['target'].values
-id_test = test_df['id'].values
+params = {  'max_depth' : 6,
+            'learning_rate' : 0.03,
+            'reg_lamda' : 4.0,
+            'n_estimators' : 916}
+model = XGBClassifier(**params)
+skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1, verbose=1)
 
-X = train_df.drop(['target', 'id'], axis=1)
-X_test = test_df.drop(['id'], axis=1)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.25)
-
-d_train = xgb.DMatrix(X_train, y_train)
-d_val = xgb.DMatrix(X_val, y_val)
-d_test = xgb.DMatrix(X_test)
-
-params = {}
-params['objective'] = 'binary:logistic'
-watchlist = [(d_train, 'train'), (d_val, 'val')]
-model = xgb.train(params, d_train, 10000, watchlist, early_stopping_rounds=200,
-feval=gini_xgb, maximize=True, verbose_eval=10)
-
-p_test = model.predict(d_test)
+mean_cv = scores.mean()
+model = XGBClassifier(**params)
+model.fit(X, y, verbose=True)
+X_test = np.load('../data/' + dir_name + '/X-test.npy')
+p_test = model.predict_proba(X_test)[:, 1]
 
 sub_df = pd.DataFrame()
+id_test = np.load('../data/' + dir_name + '/id-test.npy')
 sub_df['id'] = id_test
 sub_df['target'] = p_test
-sub_df.to_csv(sub_path + 'xgb0.csv', index=False)
+sub_name = str(mean_cv)
+sub_df.to_csv(sub_path + 'xgb-' + sub_name + '.csv', index=False)
+print('mean cv score: ', mean_cv)
+print('Submission file created')
