@@ -98,9 +98,10 @@ ENV/
 # mypy
 .mypy_cache/
 
-data/
-code/learn_error.tsv
-code/meta.tsv
-*.tfevents
-code/time_left.tsv
-code/test_error.tsv
+code/**/*.tsv
+data/**/*.csv
+code/**/*.tfevents
+data/**/X.npy
+data/**/X-test.npy
+data/**/y.npy
+data/**/id-test.npy

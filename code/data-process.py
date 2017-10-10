@@ -2,12 +2,15 @@ import numpy as np
 import pandas as pd
 import os
 
-train_path = '../data/train.csv'
-test_path = '../data/test.csv'
+train_file = '../data/raw-csv/train.csv'
+test_file = '../data/raw-csv/test.csv'
 
-train_df = pd.read_csv(train_path)
-test_df = pd.read_csv(test_path)
+train_df = pd.read_csv(train_file)
+test_df = pd.read_csv(test_file)
 
+dir_name = 'raw-npd'
+
+'''
 # from EDA
 binary_feats = ['ps_ind_06_bin', 'ps_ind_07_bin', 'ps_ind_08_bin',
                 'ps_ind_09_bin', 'ps_ind_10_bin', 'ps_ind_11_bin',
@@ -26,14 +29,14 @@ int_feats = ['ps_ind_01', 'ps_id_03', 'ps_ind_14', 'ps_ind_15', 'ps_car_11',
 float_feats = ['ps_reg_01', 'ps_reg_02', 'ps_reg_03', 'ps_calc_01',
                'ps_calc_02', 'ps_calc_03', 'ps_car_12', 'ps_car_13',
                'ps_car_14', 'ps_car_15']
-
+'''
 # id, target drop
 y = train_df['target'].values
 id_test = test_df['id'].values
 
 X = train_df.drop(['target', 'id'], axis=1)
 X_test = test_df.drop(['id'], axis=1)
-
+'''
 # simple filtering
 feat_to_drop = ['ps_ind_10_bin', 'ps_ind_11_bin', 'ps_ind_12_bin',
                 'ps_ind_13_bin']
@@ -50,11 +53,12 @@ X_test['sum_bin'] = sum([X_test[f] for f in binary_feats if f not in feat_to_dro
 X_test['sum_NA'] = sum([(X_test[f] == -1) for f in X_test.columns])
 X_test['ps_car_15_sqr'] = (X_test['ps_car_15'])**2
 X_test = X_test.drop(['ps_car_15'], axis=1)
-
-np.save('../data/X-filt.npy', X)
-np.save('../data/X-test-filt.npy', X_test)
-np.save('../data/y.npy', y)
-np.save('../data/id-test.npy', id_test)
-
-np.save('../pics/feat_names.npy', X.columns)
-np.save('../pics/X-shape1.npy', X.shape[1])
+'''
+if not os.path.exists('../data/' + dir_name):
+    os.makedirs('../data/' + dir_name)
+np.save('../data/' + dir_name + '/X.npd', X)
+np.save('../data/' + dir_name + '/X-test.npd', X_test)
+np.save('../data/' + dir_name + '/y.npd', y)
+np.save('../data/' + dir_name + '/id-test.npd', id_test)
+np.save('../data/' + dir_name + '/feat_names.npy', X.columns)
+np.save('../data/' + dir_name + '/X-shape1.npy', X.shape[1])
