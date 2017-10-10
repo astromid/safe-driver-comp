@@ -14,7 +14,7 @@ params = {  'max_depth' : 6,
             'reg_lamda' : 4.0,
             'n_estimators' : 916}
 model = XGBClassifier(**params)
-skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+skf = StratifiedKFold(n_splits=7, shuffle=True, random_state=42)
 scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1, verbose=1)
 
 mean_cv = scores.mean()

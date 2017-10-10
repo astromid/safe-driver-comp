@@ -12,7 +12,7 @@ y = np.load('../data/' + dir_name + '/y.npy')
 hopt_params = np.load('best-params.npy').item()
 
 model = CatBoostClassifier(**hopt_params)
-skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+skf = StratifiedKFold(n_splits=7, shuffle=True, random_state=42)
 scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1, verbose=1)
 
 mean_cv = scores.mean()
