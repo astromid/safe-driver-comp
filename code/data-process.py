@@ -8,7 +8,7 @@ test_file = '../data/raw-csv/test.csv'
 train_df = pd.read_csv(train_file)
 test_df = pd.read_csv(test_file)
 
-dir_name = 'raw-npd'
+dir_name = 'raw-npy'
 
 '''
 # from EDA
@@ -56,9 +56,9 @@ X_test = X_test.drop(['ps_car_15'], axis=1)
 '''
 if not os.path.exists('../data/' + dir_name):
     os.makedirs('../data/' + dir_name)
-np.save('../data/' + dir_name + '/X.npd', X)
-np.save('../data/' + dir_name + '/X-test.npd', X_test)
-np.save('../data/' + dir_name + '/y.npd', y)
-np.save('../data/' + dir_name + '/id-test.npd', id_test)
+np.save('../data/' + dir_name + '/X.npy', X)
+np.save('../data/' + dir_name + '/X-test.npy', X_test)
+np.save('../data/' + dir_name + '/y.npy', y)
+np.save('../data/' + dir_name + '/id-test.npy', id_test)
 np.save('../data/' + dir_name + '/feat_names.npy', X.columns)
 np.save('../data/' + dir_name + '/X-shape1.npy', X.shape[1])
