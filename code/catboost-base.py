@@ -2,26 +2,28 @@ import numpy as np
 from catboost import CatBoostClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
-
-train_file = '../data/raw/train.csv'
-test_file = '../data/raw/test.csv'
 sub_path = '../subs/'
+dir_name = 'raw-npy'
 
-train_df = pd.read_csv(train_path)
-test_df = pd.read_csv(test_path)
+X = np.load('../data/' + dir_name + '/X.npy')
+y = np.load('../data/' + dir_name + '/y.npy')
 
-y = train_df['target'].values
-id_test = test_df['id'].values
+hopt_params = np.load('best-params.npy').item()
 
-X = train_df.drop(['target', 'id'], axis=1)
-model = CatBoostClassifier()
+model = CatBoostClassifier(**hopt_params)
+skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1, verbose=1)
+
+mean_cv = scores.mean()
+model = CatBoostClassifier(**hopt_params)
 model.fit(X, y, verbose=True)
-
-
+X_test = np.load('../data/' + dir_name + '/X-test.npy')
 p_test = model.predict_proba(X_test)[:, 1]
-
 sub_df = pd.DataFrame()
+id_test = np.load('../data/' + dir_name + '/id-test.npy')
 sub_df['id'] = id_test
 sub_df['target'] = p_test
-sub_df.to_csv(sub_path + 'catb-filt-1.csv', index=False)
+sub_name = str(mean_cv)
+sub_df.to_csv(sub_path + 'catb-' + sub_name + '.csv', index=False)
+print('mean cv score: ', mean_cv)
 print('Submission file created')
