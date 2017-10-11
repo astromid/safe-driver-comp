@@ -11,7 +11,7 @@ y = np.load('../data/' + dir_name + '/y.npy')
 
 params = {  'max_depth' : 6,
             'learning_rate' : 0.03,
-            'reg_lamda' : 4.0,
+            'reg_lambda' : 4.0,
             'n_estimators' : 916}
 model = XGBClassifier(**params)
 skf = StratifiedKFold(n_splits=7, shuffle=True, random_state=42)
