@@ -10,10 +10,15 @@ X = np.load('../data/' + dir_name + '/X.npy')
 y = np.load('../data/' + dir_name + '/y.npy')
 
 hopt_params = np.load('best-params.npy').item()
-
+cat_feats = ['ps_ind_02_cat', 'ps_ind_04_cat', 'ps_ind_05_cat', 'ps_car_01_cat',
+             'ps_car_02_cat', 'ps_car_03_cat', 'ps_car_04_cat', 'ps_car_04_cat',
+             'ps_car_04_cat', 'ps_car_05_cat', 'ps_car_06_cat', 'ps_car_07_cat',
+             'ps_car_08_cat', 'ps_car_09_cat', 'ps_car_10_cat', 'ps_car_11_cat']
+fit_params = {'cat_features' : cat_feats}
 model = CatBoostClassifier(**hopt_params)
 skf = StratifiedKFold(n_splits=7, shuffle=True, random_state=42)
-scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1, verbose=1)
+scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1,
+                            verbose=1, fit_params=fit_params)
 
 mean_cv = scores.mean()
 model = CatBoostClassifier(**hopt_params)
