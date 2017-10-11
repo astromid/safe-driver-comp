@@ -8,7 +8,7 @@ test_file = '../data/raw-csv/test.csv'
 train_df = pd.read_csv(train_file)
 test_df = pd.read_csv(test_file)
 
-dir_name = 'raw-npy'
+dir_name = 'fe1-npy'
 
 '''
 # from EDA
@@ -36,13 +36,13 @@ id_test = test_df['id'].values
 
 X = train_df.drop(['target', 'id'], axis=1)
 X_test = test_df.drop(['id'], axis=1)
-'''
+
 # simple filtering
 feat_to_drop = ['ps_ind_10_bin', 'ps_ind_11_bin', 'ps_ind_12_bin',
                 'ps_ind_13_bin']
 X = X.drop(feat_to_drop, axis=1)
 X_test = X_test.drop(feat_to_drop, axis=1)
-
+'''
 # new features
 X['sum_bin'] = sum([X[f] for f in binary_feats if f not in feat_to_drop])
 X['sum_NA'] = sum([(X[f] == -1) for f in X.columns])
