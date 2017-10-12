@@ -57,8 +57,8 @@ X_test = X_test.drop(['ps_car_15'], axis=1)
 '''
 # NaN -> median values (3)
 for col in X.columns:
-    X[col] = X[col].apply(lambda x: None if x == -1)
-    X_test[col] = X_test[col].apply(lambda x: None if x == -1)
+    X[col] = X[col].apply(lambda x: None if x == -1 else x)
+    X_test[col] = X_test[col].apply(lambda x: None if x == -1 else x)
 for col in X.columns:
     X[col] = X[col].fillna(X[col].median())
     X_test[col] = X_test[col].fillna(X_test[col].median())
