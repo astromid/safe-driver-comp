@@ -4,18 +4,18 @@ from catboost import CatBoostClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 sub_path = '../subs/'
-dir_name = 'raw-npy'
+dir_name = 'fe3-npy'
 
 X = np.load('../data/' + dir_name + '/X.npy')
 y = np.load('../data/' + dir_name + '/y.npy')
 
 hopt_params = np.load('best-params.npy').item()
-cat_feats = [1, 3, 4, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-fit_params = {'cat_features' : cat_feats}
+#cat_feats = [1, 3, 4, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+#fit_params = {'cat_features' : cat_feats}
 model = CatBoostClassifier(**hopt_params)
 skf = StratifiedKFold(n_splits=7, shuffle=True, random_state=42)
 scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1,
-                            verbose=1, fit_params=fit_params)
+                            verbose=1)
 
 mean_cv = scores.mean()
 model = CatBoostClassifier(**hopt_params)
@@ -28,6 +28,6 @@ id_test = np.load('../data/' + dir_name + '/id-test.npy')
 sub_df['id'] = id_test
 sub_df['target'] = p_test
 sub_name = str(mean_cv)
-sub_df.to_csv(sub_path + 'catb-2-' + sub_name + '.csv', index=False)
+sub_df.to_csv(sub_path + 'catb-3-' + sub_name + '.csv', index=False)
 print('mean cv score: ', mean_cv)
 print('Submission file created')
