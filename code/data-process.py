@@ -8,9 +8,8 @@ test_file = '../data/raw-csv/test.csv'
 train_df = pd.read_csv(train_file)
 test_df = pd.read_csv(test_file)
 
-dir_name = 'fe4a-npy'
+dir_name = 'fe4b-npy'
 
-'''
 # from EDA
 binary_feats = ['ps_ind_06_bin', 'ps_ind_07_bin', 'ps_ind_08_bin',
                 'ps_ind_09_bin', 'ps_ind_10_bin', 'ps_ind_11_bin',
@@ -29,7 +28,7 @@ int_feats = ['ps_ind_01', 'ps_id_03', 'ps_ind_14', 'ps_ind_15', 'ps_car_11',
 float_feats = ['ps_reg_01', 'ps_reg_02', 'ps_reg_03', 'ps_calc_01',
                'ps_calc_02', 'ps_calc_03', 'ps_car_12', 'ps_car_13',
                'ps_car_14', 'ps_car_15']
-'''
+
 # id, target drop
 y = train_df['target'].values
 id_test = test_df['id'].values
@@ -44,16 +43,19 @@ feat_to_drop = ['ps_ind_10_bin', 'ps_ind_11_bin', 'ps_ind_12_bin',
 X = X.drop(feat_to_drop, axis=1)
 X_test = X_test.drop(feat_to_drop, axis=1)
 '''
+'''
 # new features (4a)
 X['sum_NA'] = sum([(X[f] == -1) for f in X.columns])
 X_test['sum_NA'] = sum([(X_test[f] == -1) for f in X_test.columns])
+'''
+# new features (4b)
+X['sum_bin'] = sum([X[f] for f in binary_feats])
+X_test['sum_bin'] = sum([X_test[f] for f in binary_feats])
 
 '''
-X['sum_bin'] = sum([X[f] for f in binary_feats if f not in feat_to_drop])
 X['ps_car_15_sqr'] = (X['ps_car_15'])**2
 X = X.drop(['ps_car_15'], axis=1)
 
-X_test['sum_bin'] = sum([X_test[f] for f in binary_feats if f not in feat_to_drop])
 X_test['ps_car_15_sqr'] = (X_test['ps_car_15'])**2
 X_test = X_test.drop(['ps_car_15'], axis=1)
 '''
