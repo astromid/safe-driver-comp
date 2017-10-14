@@ -5,10 +5,10 @@ import os
 train_file = '../data/raw-csv/train.csv'
 test_file = '../data/raw-csv/test.csv'
 
-train_df = pd.read_csv(train_file)
-test_df = pd.read_csv(test_file)
+train_df = pd.read_csv(train_file, na_values=['-1', '-1.0'])
+test_df = pd.read_csv(test_file, na_values=['-1', '-1.0'])
 
-dir_name = 'fe4b-npy'
+dir_name = 'fe5-npy'
 
 # from EDA
 binary_feats = ['ps_ind_06_bin', 'ps_ind_07_bin', 'ps_ind_08_bin',
@@ -48,10 +48,11 @@ X_test = X_test.drop(feat_to_drop, axis=1)
 X['sum_NA'] = sum([(X[f] == -1) for f in X.columns])
 X_test['sum_NA'] = sum([(X_test[f] == -1) for f in X_test.columns])
 '''
+'''
 # new features (4b)
 X['sum_bin'] = sum([X[f] for f in binary_feats])
 X_test['sum_bin'] = sum([X_test[f] for f in binary_feats])
-
+'''
 '''
 X['ps_car_15_sqr'] = (X['ps_car_15'])**2
 X = X.drop(['ps_car_15'], axis=1)
