@@ -24,7 +24,7 @@ def hopt_objective(params):
     print(params)
     est = CatBoostClassifier(**params)
     shuffle = KFold(n_splits=5, shuffle=True)
-    score = cross_val_score(est, X, y, cv=shuffle, scoring='roc_auc', n_jobs=4, verbose=1)
+    score = cross_val_score(est, X, y, cv=shuffle, scoring='roc_auc', n_jobs=-1, verbose=1)
     return 1-score.mean()
 
 trials = Trials()

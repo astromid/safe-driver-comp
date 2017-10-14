@@ -3,9 +3,11 @@ import seaborn as sns
 import numpy as np
 sns.set()
 
-feat_imp =  np.load('../pics/feat-imp-hopt.npy')
-feat_names = np.load('../pics/feat_names.npy')
-X_shape1 = np.load('../pics/X-shape1.npy')
+dir_name = 'fe5-npy'
+
+feat_imp =  np.load('../pics/feat-imp-npy/' + dir_name + '-catb.npy')
+feat_names = np.load('../data/' + dir_name + '/feat_names.npy')
+X_shape1 = np.load('../data/' + dir_name +  '/X-shape1.npy')
 
 order = np.argsort(feat_imp)
 plt.figure(figsize=[10, 15])
@@ -16,5 +18,5 @@ plt.tick_params(labelsize=14)
 plt.xlim([0.1, max(feat_imp)*1.5])
 plt.ylim(-1, len(order))
 plt.xscale('log')
-plt.savefig('../pics/feature-imp-hopt.png')
+plt.savefig('../pics/' + dir_name + '-catb.png')
 print('Feature importance saved')

@@ -5,10 +5,13 @@ import os
 train_file = '../data/raw-csv/train.csv'
 test_file = '../data/raw-csv/test.csv'
 
-train_df = pd.read_csv(train_file, na_values=['-1', '-1.0'])
-test_df = pd.read_csv(test_file, na_values=['-1', '-1.0'])
+#train_df = pd.read_csv(train_file, na_values=['-1', '-1.0'])
+#test_df = pd.read_csv(test_file, na_values=['-1', '-1.0'])
+train_df = pd.read_csv(train_file)
+test_df = pd.read_csv(test_file)
 
-dir_name = 'fe5-npy'
+
+dir_name = 'fe4c-npy'
 
 # from EDA
 binary_feats = ['ps_ind_06_bin', 'ps_ind_07_bin', 'ps_ind_08_bin',
@@ -53,13 +56,13 @@ X_test['sum_NA'] = sum([(X_test[f] == -1) for f in X_test.columns])
 X['sum_bin'] = sum([X[f] for f in binary_feats])
 X_test['sum_bin'] = sum([X_test[f] for f in binary_feats])
 '''
-'''
-X['ps_car_15_sqr'] = (X['ps_car_15'])**2
-X = X.drop(['ps_car_15'], axis=1)
 
+# new features (4c)
+X['ps_car_15_sqr'] = (X['ps_car_15'])**2
+#X = X.drop(['ps_car_15'], axis=1)
 X_test['ps_car_15_sqr'] = (X_test['ps_car_15'])**2
-X_test = X_test.drop(['ps_car_15'], axis=1)
-'''
+#X_test = X_test.drop(['ps_car_15'], axis=1)
+
 '''
 # NaN -> median values (3)
 for col in X.columns:
