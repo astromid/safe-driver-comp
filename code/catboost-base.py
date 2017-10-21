@@ -16,8 +16,8 @@ cat_feats = [1, 3, 4, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 fit_params = {'cat_features' : cat_feats}
 '''
 model = CatBoostClassifier(**hopt_params)
-skf = StratifiedKFold(n_splits=7, shuffle=True, random_state=42)
-scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=-1,
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=3,
                             verbose=1)
 
 mean_cv = scores.mean()
