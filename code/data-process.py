@@ -10,8 +10,8 @@ test_file = '../data/raw-csv/test.csv'
 train_df = pd.read_csv(train_file)
 test_df = pd.read_csv(test_file)
 
-
-dir_name = 'fe4c-npy'
+marker = '4c'
+dir_name = 'fe' + marker + '-npy'
 
 # from EDA
 binary_feats = ['ps_ind_06_bin', 'ps_ind_07_bin', 'ps_ind_08_bin',
