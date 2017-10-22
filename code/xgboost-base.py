@@ -10,17 +10,16 @@ dir_name = 'fe' + marker + '-npy'
 X = np.load('../data/' + dir_name + '/X.npy')
 y = np.load('../data/' + dir_name + '/y.npy')
 
-params = {  'eta': 0.02,
+params = {  'learning_rate': 0.02,
             'max_depth': 4,
             'subsample': 0.9,
             'colsample_bytree': 0.9,
             'objective': 'binary:logistic',
-            'eval_metric': 'auc',
             'seed': 42}
 model = XGBClassifier(**params)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=4, verbose=1)
-np.save('../data' + dir_name + '/xgb-' + marker + '-cv.npy', scores)
+np.save('../data/' + dir_name + '/xgb-' + marker + '-cv.npy', scores)
 mean_cv = scores.mean()
 model = XGBClassifier(**params)
 model.fit(X, y, verbose=True)

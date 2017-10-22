@@ -20,7 +20,7 @@ model = CatBoostClassifier(**hopt_params)
 skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 scores = cross_val_score(model, X, y, scoring='roc_auc', cv=skf, n_jobs=4,
                             verbose=1)
-np.save('../data' + dir_name + '/catb-' + marker + '-cv.npy', scores)
+np.save('../data/' + dir_name + '/catb-' + marker + '-cv.npy', scores)
 mean_cv = scores.mean()
 model = CatBoostClassifier(**hopt_params)
 model.fit(X, y, verbose=True)
